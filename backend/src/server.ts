@@ -1,6 +1,7 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.route";
+import boardRouter from "./routes/board.route";
 
 const app = express();
 
@@ -15,7 +16,8 @@ const PORT = process.env.PORT || 3000;
 // API Routes
 const API_ROUTE = process.env.API_ROUTE!;
 
-app.use(API_ROUTE, authRouter);
+app.use(`${API_ROUTE}/auth`, authRouter);
+app.use(`${API_ROUTE}/boards`, boardRouter);
 
 // Start Server
 app.listen(PORT, () => {
