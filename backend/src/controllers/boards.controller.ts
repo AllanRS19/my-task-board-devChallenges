@@ -2,14 +2,19 @@ import type { Response } from "express";
 import prisma from "../lib/db";
 import { Prisma } from "../generated/prisma/client";
 import { sendResponse } from "../lib/utils";
+import { DEFAULT_BOARD_TASKS } from "../lib/defaultBoard";
 import type { AuthenticatedRequest } from "../middlewares/auth.middleware";
-
-const MIN_TITLE_LENGTH = 1;
-const MAX_TITLE_LENGTH = 50; // matches @db.VarChar(50)
+import { parseBody } from "../lib/schemaValidate";
+import { createBoardSchema, updateBoardSchema } from "../schemas/board.schema";
 
 export const getUserBoards = async (req: AuthenticatedRequest, res: Response) => {
 
     try {
+
+        if (!req.userId) {
+            return sendResponse(res, 401, false, 'Not authenticated');
+        }
+
         const userBoards = await prisma.board.findMany({
             where: { owner_id: req.userId },
             select: {
@@ -25,6 +30,7 @@ export const getUserBoards = async (req: AuthenticatedRequest, res: Response) =>
             boardsCount: userBoards.length,
             boards: userBoards
         });
+
     } catch (error) {
         console.error(error instanceof Error ? error.message : 'We could not fetch your boards');
         return sendResponse(res, 500, false, 'There was an error fetching your boards');
@@ -35,17 +41,32 @@ export const getUserBoards = async (req: AuthenticatedRequest, res: Response) =>
 export const getBoardById = async (req: AuthenticatedRequest, res: Response) => {
 
     try {
+
+        if (!req.userId) {
+            return sendResponse(res, 401, false, 'Not authenticated');
+        }
+
         const { id } = req.params;
 
         if (!id || typeof id !== "string") return sendResponse(res, 400, false, 'Invalid board id');
 
+        // Get a board including its tasks
         const board = await prisma.board.findFirst({
             where: { id, owner_id: req.userId },
-            select: { id: true, title: true }
+            select: {
+                title: true,
+                description: true,
+                tasks: {
+                    orderBy: {
+                        createdAt: 'desc'
+                    }
+                }
+            }
         });
 
         if (!board) return sendResponse(res, 404, false, 'Board not found');
 
+        // Return the board information
         return sendResponse(res, 200, true, 'Board fetched successfully', { board });
 
     } catch (error) {
@@ -56,30 +77,32 @@ export const getBoardById = async (req: AuthenticatedRequest, res: Response) => 
 }
 
 export const createBoard = async (req: AuthenticatedRequest, res: Response) => {
+
     try {
-        const { title } = req.body;
 
-        if (!title || typeof title !== 'string') {
-            return sendResponse(res, 400, false, 'Title is required');
+        if (!req.userId) {
+            return sendResponse(res, 401, false, 'Not authenticated');
         }
 
-        const trimmedTitle = title.trim();
+        // Check the data in the req.body against the schema and confirm if it meets requirements
+        const parsed = parseBody(createBoardSchema, req.body, res);
+        if (!parsed.success) return;
 
-        if (trimmedTitle.length < MIN_TITLE_LENGTH || trimmedTitle.length > MAX_TITLE_LENGTH) {
-            return sendResponse(res, 400, false, `Title must be between ${MIN_TITLE_LENGTH} and ${MAX_TITLE_LENGTH} characters`);
-        }
-
+        // Create a new board for the user
         const newBoard = await prisma.board.create({
             data: {
-                title: String(title).trim(),
-                owner_id: req.userId!
+                ...parsed.data,
+                owner_id: req.userId,
+                tasks: {
+                    create: DEFAULT_BOARD_TASKS
+                }
             },
             select: { id: true, title: true, createdAt: true, updatedAt: true }
         });
 
         return sendResponse(res, 201, true, 'Board created successfully', {
             board: {
-                title: trimmedTitle,
+                title: parsed.data.title,
                 boardId: newBoard.id
             }
         });
@@ -94,33 +117,27 @@ export const updateBoard = async (req: AuthenticatedRequest, res: Response) => {
 
     try {
 
+        // Guard to check if user is authenticated
+        if (!req.userId) {
+            return sendResponse(res, 401, false, 'Not authenticated');
+        }
+
         const { id } = req.params;
-        const { title } = req.body;
 
         // Check that ID is not empty and is a string
         if (!id || typeof id !== "string") return sendResponse(res, 400, false, 'Invalid board id');
 
-        // Check that title is not empty and is a string
-        if (!title || typeof title !== 'string') {
-            return sendResponse(res, 400, false, 'Title is required');
-        }
-
-        const trimmedTitle = title.trim();
-
-        // Check that title is meets the length requirements
-        if (trimmedTitle.length < MIN_TITLE_LENGTH || trimmedTitle.length > MAX_TITLE_LENGTH) {
-            return sendResponse(res, 400, false, `Title must be between ${MIN_TITLE_LENGTH} and ${MAX_TITLE_LENGTH} characters`);
-        }
+        // Check the data in the req.body against the schema and confirm if it meets requirements
+        const parsed = parseBody(updateBoardSchema, req.body, res);
+        if (!parsed.success) return; // parseBody already sent the 400 response
 
         // Update board to new title
         const board = await prisma.board.update({
-            data: { title: trimmedTitle },
+            data: parsed.data,
             where: { id, owner_id: req.userId }
         });
 
-        return sendResponse(res, 200, true, 'Board updated successfully', {
-            board
-        });
+        return sendResponse(res, 200, true, 'Board updated successfully', { board });
 
     } catch (error) {
 
@@ -137,6 +154,10 @@ export const updateBoard = async (req: AuthenticatedRequest, res: Response) => {
 export const deleteBoard = async (req: AuthenticatedRequest, res: Response) => {
 
     try {
+
+        if (!req.userId) {
+            return sendResponse(res, 401, false, 'Not authenticated');
+        }
 
         const { id } = req.params;
 

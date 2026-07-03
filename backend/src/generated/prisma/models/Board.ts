@@ -27,6 +27,7 @@ export type AggregateBoard = {
 export type BoardMinAggregateOutputType = {
   id: string | null
   title: string | null
+  description: string | null
   owner_id: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -35,6 +36,7 @@ export type BoardMinAggregateOutputType = {
 export type BoardMaxAggregateOutputType = {
   id: string | null
   title: string | null
+  description: string | null
   owner_id: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -43,6 +45,7 @@ export type BoardMaxAggregateOutputType = {
 export type BoardCountAggregateOutputType = {
   id: number
   title: number
+  description: number
   owner_id: number
   createdAt: number
   updatedAt: number
@@ -53,6 +56,7 @@ export type BoardCountAggregateOutputType = {
 export type BoardMinAggregateInputType = {
   id?: true
   title?: true
+  description?: true
   owner_id?: true
   createdAt?: true
   updatedAt?: true
@@ -61,6 +65,7 @@ export type BoardMinAggregateInputType = {
 export type BoardMaxAggregateInputType = {
   id?: true
   title?: true
+  description?: true
   owner_id?: true
   createdAt?: true
   updatedAt?: true
@@ -69,6 +74,7 @@ export type BoardMaxAggregateInputType = {
 export type BoardCountAggregateInputType = {
   id?: true
   title?: true
+  description?: true
   owner_id?: true
   createdAt?: true
   updatedAt?: true
@@ -150,6 +156,7 @@ export type BoardGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type BoardGroupByOutputType = {
   id: string
   title: string
+  description: string | null
   owner_id: string
   createdAt: Date
   updatedAt: Date
@@ -179,19 +186,23 @@ export type BoardWhereInput = {
   NOT?: Prisma.BoardWhereInput | Prisma.BoardWhereInput[]
   id?: Prisma.StringFilter<"Board"> | string
   title?: Prisma.StringFilter<"Board"> | string
+  description?: Prisma.StringNullableFilter<"Board"> | string | null
   owner_id?: Prisma.StringFilter<"Board"> | string
   createdAt?: Prisma.DateTimeFilter<"Board"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Board"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  tasks?: Prisma.TaskListRelationFilter
 }
 
 export type BoardOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   owner_id?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   owner?: Prisma.UserOrderByWithRelationInput
+  tasks?: Prisma.TaskOrderByRelationAggregateInput
 }
 
 export type BoardWhereUniqueInput = Prisma.AtLeast<{
@@ -200,15 +211,18 @@ export type BoardWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.BoardWhereInput[]
   NOT?: Prisma.BoardWhereInput | Prisma.BoardWhereInput[]
   title?: Prisma.StringFilter<"Board"> | string
+  description?: Prisma.StringNullableFilter<"Board"> | string | null
   owner_id?: Prisma.StringFilter<"Board"> | string
   createdAt?: Prisma.DateTimeFilter<"Board"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Board"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  tasks?: Prisma.TaskListRelationFilter
 }, "id">
 
 export type BoardOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   owner_id?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -223,6 +237,7 @@ export type BoardScalarWhereWithAggregatesInput = {
   NOT?: Prisma.BoardScalarWhereWithAggregatesInput | Prisma.BoardScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Board"> | string
   title?: Prisma.StringWithAggregatesFilter<"Board"> | string
+  description?: Prisma.StringNullableWithAggregatesFilter<"Board"> | string | null
   owner_id?: Prisma.StringWithAggregatesFilter<"Board"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Board"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Board"> | Date | string
@@ -231,38 +246,47 @@ export type BoardScalarWhereWithAggregatesInput = {
 export type BoardCreateInput = {
   id?: string
   title: string
+  description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutBoardsInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutBoardInput
 }
 
 export type BoardUncheckedCreateInput = {
   id?: string
   title: string
+  description?: string | null
   owner_id: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutBoardInput
 }
 
 export type BoardUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutBoardsNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutBoardNestedInput
 }
 
 export type BoardUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   owner_id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutBoardNestedInput
 }
 
 export type BoardCreateManyInput = {
   id?: string
   title: string
+  description?: string | null
   owner_id: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -271,6 +295,7 @@ export type BoardCreateManyInput = {
 export type BoardUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -278,6 +303,7 @@ export type BoardUpdateManyMutationInput = {
 export type BoardUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   owner_id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -296,6 +322,7 @@ export type BoardOrderByRelationAggregateInput = {
 export type BoardCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   owner_id?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -304,6 +331,7 @@ export type BoardCountOrderByAggregateInput = {
 export type BoardMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   owner_id?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -312,9 +340,15 @@ export type BoardMaxOrderByAggregateInput = {
 export type BoardMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   owner_id?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type BoardScalarRelationFilter = {
+  is?: Prisma.BoardWhereInput
+  isNot?: Prisma.BoardWhereInput
 }
 
 export type BoardCreateNestedManyWithoutOwnerInput = {
@@ -359,18 +393,40 @@ export type BoardUncheckedUpdateManyWithoutOwnerNestedInput = {
   deleteMany?: Prisma.BoardScalarWhereInput | Prisma.BoardScalarWhereInput[]
 }
 
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
+export type BoardCreateNestedOneWithoutTasksInput = {
+  create?: Prisma.XOR<Prisma.BoardCreateWithoutTasksInput, Prisma.BoardUncheckedCreateWithoutTasksInput>
+  connectOrCreate?: Prisma.BoardCreateOrConnectWithoutTasksInput
+  connect?: Prisma.BoardWhereUniqueInput
+}
+
+export type BoardUpdateOneRequiredWithoutTasksNestedInput = {
+  create?: Prisma.XOR<Prisma.BoardCreateWithoutTasksInput, Prisma.BoardUncheckedCreateWithoutTasksInput>
+  connectOrCreate?: Prisma.BoardCreateOrConnectWithoutTasksInput
+  upsert?: Prisma.BoardUpsertWithoutTasksInput
+  connect?: Prisma.BoardWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BoardUpdateToOneWithWhereWithoutTasksInput, Prisma.BoardUpdateWithoutTasksInput>, Prisma.BoardUncheckedUpdateWithoutTasksInput>
+}
+
 export type BoardCreateWithoutOwnerInput = {
   id?: string
   title: string
+  description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  tasks?: Prisma.TaskCreateNestedManyWithoutBoardInput
 }
 
 export type BoardUncheckedCreateWithoutOwnerInput = {
   id?: string
   title: string
+  description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutBoardInput
 }
 
 export type BoardCreateOrConnectWithoutOwnerInput = {
@@ -405,14 +461,68 @@ export type BoardScalarWhereInput = {
   NOT?: Prisma.BoardScalarWhereInput | Prisma.BoardScalarWhereInput[]
   id?: Prisma.StringFilter<"Board"> | string
   title?: Prisma.StringFilter<"Board"> | string
+  description?: Prisma.StringNullableFilter<"Board"> | string | null
   owner_id?: Prisma.StringFilter<"Board"> | string
   createdAt?: Prisma.DateTimeFilter<"Board"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Board"> | Date | string
 }
 
+export type BoardCreateWithoutTasksInput = {
+  id?: string
+  title: string
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutBoardsInput
+}
+
+export type BoardUncheckedCreateWithoutTasksInput = {
+  id?: string
+  title: string
+  description?: string | null
+  owner_id: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type BoardCreateOrConnectWithoutTasksInput = {
+  where: Prisma.BoardWhereUniqueInput
+  create: Prisma.XOR<Prisma.BoardCreateWithoutTasksInput, Prisma.BoardUncheckedCreateWithoutTasksInput>
+}
+
+export type BoardUpsertWithoutTasksInput = {
+  update: Prisma.XOR<Prisma.BoardUpdateWithoutTasksInput, Prisma.BoardUncheckedUpdateWithoutTasksInput>
+  create: Prisma.XOR<Prisma.BoardCreateWithoutTasksInput, Prisma.BoardUncheckedCreateWithoutTasksInput>
+  where?: Prisma.BoardWhereInput
+}
+
+export type BoardUpdateToOneWithWhereWithoutTasksInput = {
+  where?: Prisma.BoardWhereInput
+  data: Prisma.XOR<Prisma.BoardUpdateWithoutTasksInput, Prisma.BoardUncheckedUpdateWithoutTasksInput>
+}
+
+export type BoardUpdateWithoutTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutBoardsNestedInput
+}
+
+export type BoardUncheckedUpdateWithoutTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  owner_id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type BoardCreateManyOwnerInput = {
   id?: string
   title: string
+  description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -420,38 +530,76 @@ export type BoardCreateManyOwnerInput = {
 export type BoardUpdateWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tasks?: Prisma.TaskUpdateManyWithoutBoardNestedInput
 }
 
 export type BoardUncheckedUpdateWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutBoardNestedInput
 }
 
 export type BoardUncheckedUpdateManyWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
+/**
+ * Count Type BoardCountOutputType
+ */
+
+export type BoardCountOutputType = {
+  tasks: number
+}
+
+export type BoardCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tasks?: boolean | BoardCountOutputTypeCountTasksArgs
+}
+
+/**
+ * BoardCountOutputType without action
+ */
+export type BoardCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BoardCountOutputType
+   */
+  select?: Prisma.BoardCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * BoardCountOutputType without action
+ */
+export type BoardCountOutputTypeCountTasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TaskWhereInput
+}
+
 
 export type BoardSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
+  description?: boolean
   owner_id?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  tasks?: boolean | Prisma.Board$tasksArgs<ExtArgs>
+  _count?: boolean | Prisma.BoardCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["board"]>
 
 export type BoardSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
+  description?: boolean
   owner_id?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -461,6 +609,7 @@ export type BoardSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type BoardSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
+  description?: boolean
   owner_id?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -470,14 +619,17 @@ export type BoardSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type BoardSelectScalar = {
   id?: boolean
   title?: boolean
+  description?: boolean
   owner_id?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type BoardOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "owner_id" | "createdAt" | "updatedAt", ExtArgs["result"]["board"]>
+export type BoardOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "owner_id" | "createdAt" | "updatedAt", ExtArgs["result"]["board"]>
 export type BoardInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  tasks?: boolean | Prisma.Board$tasksArgs<ExtArgs>
+  _count?: boolean | Prisma.BoardCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type BoardIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -490,10 +642,12 @@ export type $BoardPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   name: "Board"
   objects: {
     owner: Prisma.$UserPayload<ExtArgs>
+    tasks: Prisma.$TaskPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     title: string
+    description: string | null
     owner_id: string
     createdAt: Date
     updatedAt: Date
@@ -892,6 +1046,7 @@ readonly fields: BoardFieldRefs;
 export interface Prisma__BoardClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  tasks<T extends Prisma.Board$tasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Board$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -923,6 +1078,7 @@ export interface Prisma__BoardClient<T, Null = never, ExtArgs extends runtime.Ty
 export interface BoardFieldRefs {
   readonly id: Prisma.FieldRef<"Board", 'String'>
   readonly title: Prisma.FieldRef<"Board", 'String'>
+  readonly description: Prisma.FieldRef<"Board", 'String'>
   readonly owner_id: Prisma.FieldRef<"Board", 'String'>
   readonly createdAt: Prisma.FieldRef<"Board", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Board", 'DateTime'>
@@ -1324,6 +1480,30 @@ export type BoardDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Boards to delete.
    */
   limit?: number
+}
+
+/**
+ * Board.tasks
+ */
+export type Board$tasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Task
+   */
+  select?: Prisma.TaskSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Task
+   */
+  omit?: Prisma.TaskOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TaskInclude<ExtArgs> | null
+  where?: Prisma.TaskWhereInput
+  orderBy?: Prisma.TaskOrderByWithRelationInput | Prisma.TaskOrderByWithRelationInput[]
+  cursor?: Prisma.TaskWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TaskScalarFieldEnum | Prisma.TaskScalarFieldEnum[]
 }
 
 /**

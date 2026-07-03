@@ -18,10 +18,32 @@ model User {
 }
 
 model Board {
-    id        String   @id @default(uuid())
-    title     String   @db.VarChar(50)
-    owner     User     @relation(fields: [owner_id], references: [id], onDelete: Cascade)
-    owner_id  String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @default(now()) @updatedAt
+    id          String   @id @default(uuid())
+    title       String   @db.VarChar(50)
+    description String?  @db.VarChar(200)
+    owner       User     @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+    owner_id    String
+    tasks       Task[]
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @default(now()) @updatedAt
+}
+
+model Task {
+    id          String     @id @default(uuid())
+    name        String
+    description String?    @db.VarChar(200)
+    status      TaskStatus @default(IN_PROGRESS)
+    board       Board      @relation(fields: [board_id], references: [id], onDelete: Cascade)
+    board_id    String
+    icon        String
+    createdAt   DateTime   @default(now())
+    updatedAt   DateTime   @default(now()) @updatedAt
+
+    @@unique([board_id, name])
+}
+
+enum TaskStatus {
+    IN_PROGRESS
+    COMPLETED
+    WONT_DO
 }

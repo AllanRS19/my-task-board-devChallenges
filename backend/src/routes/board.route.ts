@@ -16,7 +16,7 @@ boardRouter.get('/:id', getBoardById);
 boardRouter.post('/', createBoard);
 
 // Path: /api/v1/boards/:id (PUT)
-boardRouter.put('/:id', updateBoard);
+boardRouter.patch('/:id', updateBoard);
 
 // Path: /api/v1/boards/:id (DELETE)
 boardRouter.delete('/:id', deleteBoard);
