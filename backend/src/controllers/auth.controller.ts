@@ -1,15 +1,16 @@
-import { response, type Request, type RequestHandler, type Response } from "express";
+import { type Request, type RequestHandler, type Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import type { AuthenticatedRequest } from "../middlewares/auth.middleware";
 import prisma from "../lib/db";
 import { Prisma } from "../generated/prisma/client";
-import { isEmailValid, normalizeEmail, sendResponse } from "../lib/utils";
-import type { AuthenticatedRequest } from "../middlewares/auth.middleware";
-import { AUTH_COOKIE_NAME, authCookieOptions } from "../lib/cookies";
+import { sendResponse } from "../lib/utils";
+import { AUTH_COOKIE_NAME, authCookieOptions, clearAuthCookieOptions } from "../lib/cookies";
+import { parseBody } from "../lib/schemaValidate";
+import { signInSchema, signUpSchema } from "../schemas/auth.schema";
+import { DEFAULT_BOARD_TASKS, DEFAULT_BOARD_TITLE } from "../lib/defaultBoard";
 
 const SALT_ROUNDS = 10;
-const MIN_PASSWORD_LENGTH = 8;
-const MAX_PASSWORD_LENGTH = 72;
 
 // Fail fast at startup, not per-request
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -22,30 +23,12 @@ if (!JWT_SECRET) {
 export const signUp: RequestHandler = async (req: Request, res: Response) => {
 
     try {
-        const { name, email, password } = req.body;
 
-        // Validating inconming data before making network requests
-        if (!name || !email || !password) {
-            return sendResponse(res, 400, false, 'All fields are required');
-        }
+        const parsed = parseBody(signUpSchema, req.body, res);
 
-        // Checking if password is a string
-        if (typeof password !== "string") {
-            return sendResponse(res, 400, false, 'Password must be a string');
-        }
+        if (!parsed.success) return;
 
-        // Checking if password meets requirements
-        if (password.length < MIN_PASSWORD_LENGTH || password.length > MAX_PASSWORD_LENGTH) {
-            return sendResponse(res, 400, false, `Password must be between ${MIN_PASSWORD_LENGTH} and ${MAX_PASSWORD_LENGTH}`)
-        }
-
-        // Normalize email to eliminate white spaces and make it lowercase
-        const normalizedEmail = normalizeEmail(email);
-
-        // Check if user's email format is valid
-        if (!isEmailValid(normalizedEmail)) {
-            return sendResponse(res, 400, false, 'Invalid email format');
-        }
+        const { password } = parsed.data;
 
         // Hash user password
         const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
@@ -58,9 +41,18 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
         // Create user in database
         const newUser = await prisma.user.create({
             data: {
-                name: String(name).trim(),
-                email: normalizedEmail,
-                password: hashedPassword
+                ...parsed.data,
+                password: hashedPassword,
+                boards: {
+                    create: [
+                        {
+                            title: DEFAULT_BOARD_TITLE,
+                            tasks: {
+                                create: DEFAULT_BOARD_TASKS
+                            }
+                        }
+                    ]
+                }
             },
             select: {
                 id: true,
@@ -78,46 +70,30 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
         });
 
     } catch (error) {
+
         if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
             return sendResponse(res, 409, false, 'Email is already in use');
         }
 
         console.error('signUp error:', error);
         return sendResponse(res, 500, false, 'There was an error creating your account');
+
     }
 
 };
 
 export const signIn: RequestHandler = async (req: Request, res: Response) => {
     try {
-        const { email, password } = req.body;
 
-        // Validating inconming data before making network requests
-        if (!email || !password) {
-            return sendResponse(res, 400, false, 'All fields are required');
-        }
+        const parsed = parseBody(signInSchema, req.body, res);
 
-        // Checking if password is a string
-        if (typeof password !== "string") {
-            return sendResponse(res, 400, false, 'Password must be a string');
-        }
+        if (!parsed.success) return;
 
-        // Checking if password meets requirements
-        if (password.length < MIN_PASSWORD_LENGTH || password.length > MAX_PASSWORD_LENGTH) {
-            return sendResponse(res, 400, false, `Password must be between ${MIN_PASSWORD_LENGTH} and ${MAX_PASSWORD_LENGTH}`)
-        }
-
-        // Normalize email to eliminate white spaces and make it lowercase
-        const normalizedEmail = normalizeEmail(email);
-
-        // Check if user's email format is valid
-        if (!isEmailValid(normalizedEmail)) {
-            return sendResponse(res, 400, false, 'Invalid email format');
-        }
+        const { email, password } = parsed.data;
 
         // Find user in the DB
         const user = await prisma.user.findUnique({
-            where: { email: normalizedEmail },
+            where: { email },
             select: { id: true, password: true }
         });
 
@@ -133,11 +109,11 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
         }
 
         // Issue a session
-        const token = jwt.sign({ userId: user?.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+        const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 
         res.cookie(AUTH_COOKIE_NAME, token, authCookieOptions);
 
-        return sendResponse(res, 201, true, 'Login successful');
+        return sendResponse(res, 200, true, 'Login successful');
 
     } catch (error) {
         console.error(error instanceof Error ? error.message : "We couldn't log you in");
@@ -147,7 +123,7 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
 
 export const signOut: RequestHandler = async (req: AuthenticatedRequest, res: Response) => {
     try {
-        res.clearCookie(AUTH_COOKIE_NAME);
+        res.clearCookie(AUTH_COOKIE_NAME, clearAuthCookieOptions);
         return sendResponse(res, 200, true, 'Logged out successfully');
     } catch (error) {
         console.error('sign-out error:', error);

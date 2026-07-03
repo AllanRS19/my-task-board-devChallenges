@@ -27,3 +27,8 @@ export type User = Prisma.UserModel
  * 
  */
 export type Board = Prisma.BoardModel
+/**
+ * Model Task
+ * 
+ */
+export type Task = Prisma.TaskModel
