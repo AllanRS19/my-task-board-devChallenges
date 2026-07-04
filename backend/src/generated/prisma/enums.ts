@@ -12,7 +12,8 @@
 export const TaskStatus = {
   IN_PROGRESS: 'IN_PROGRESS',
   COMPLETED: 'COMPLETED',
-  WONT_DO: 'WONT_DO'
+  WONT_DO: 'WONT_DO',
+  TO_DO: 'TO_DO'
 } as const
 
 export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus]

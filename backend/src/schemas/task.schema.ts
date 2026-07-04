@@ -4,7 +4,7 @@ const MIN_TASK_NAME_LENGTH = 1;
 const MAX_TASK_NAME_LENGTH = 30;
 const MAX_TASK_DESCRIPTION_LENGTH = 200;
 
-const TASK_STATUS_OPTIONS = ['COMPLETED', 'IN_PROGRESS', 'WONT_DO'] as const;
+const TASK_STATUS_OPTIONS = ['COMPLETED', 'IN_PROGRESS', 'WONT_DO', 'TO_DO'] as const;
 
 const taskSchema = z.object({
     name: z

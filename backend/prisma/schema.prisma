@@ -46,4 +46,5 @@ enum TaskStatus {
     IN_PROGRESS
     COMPLETED
     WONT_DO
+    TO_DO
 }
