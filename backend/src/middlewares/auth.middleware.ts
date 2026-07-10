@@ -15,8 +15,6 @@ interface CustomJwtPayload extends JwtPayload {
 const authenticate = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
         const token = req.cookies?.token;
-        console.log('cookies received:', req.cookies);
-        console.log('token value:', token);
 
         if (!token) {
             return sendResponse(res, 401, false, 'Not authenticated');
