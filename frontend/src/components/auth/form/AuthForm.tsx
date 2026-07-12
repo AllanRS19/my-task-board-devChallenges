@@ -18,7 +18,7 @@ const AuthForm = ({ authScreen, setAuthScreen }: AuthFormProps) => {
 
     const navigate = useNavigate();
 
-    const { mutate, isPending, isError, error } = useAuthenticate(authScreen);
+    const { mutate, isPending, isError } = useAuthenticate(authScreen);
 
     const authSchema = authScreen === 'sign-in' ? signInSchema : signUpSchema;
 
@@ -42,7 +42,7 @@ const AuthForm = ({ authScreen, setAuthScreen }: AuthFormProps) => {
                 <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
                     {isError && (
                         <div role="alert" className="rounded px-3.5 py-2.5 text-sm bg-red-50 border border-red-200 text-red-700">
-                            {error.message ?? 'Something went wrong'}
+                            Something went wrong. Please try again later
                         </div>
                     )}
                     {authScreen === 'sign-up' && (
