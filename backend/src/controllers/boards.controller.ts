@@ -15,19 +15,29 @@ export const getUserBoards = async (req: AuthenticatedRequest, res: Response) =>
             return sendResponse(res, 401, false, 'Not authenticated');
         }
 
-        const userBoards = await prisma.board.findMany({
+        const boards = await prisma.board.findMany({
             where: { owner_id: req.userId },
             select: {
                 id: true,
                 title: true,
+                description: true,
                 createdAt: true,
-                updatedAt: true
+                updatedAt: true,
+                _count: {
+                    select: { tasks: true }
+                }
             },
             orderBy: { updatedAt: 'desc' },
         });
 
+        // Flatten _count.tasks into a plain taskCount field so the frontend
+        // doesn't need to know about Prisma's internal `_count` shape.
+        const userBoards = boards.map(({ _count, ...board }) => ({
+            ...board,
+            tasksCount: _count.tasks,
+        }));
+
         return sendResponse(res, 200, true, 'Boards fetched successfully', {
-            boardsCount: userBoards.length,
             boards: userBoards
         });
 
