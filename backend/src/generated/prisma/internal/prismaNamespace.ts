@@ -778,6 +778,20 @@ export type ListEnumTaskStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 
 
 /**
+ * Reference to a field of type 'TaskIcon'
+ */
+export type EnumTaskIconFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskIcon'>
+    
+
+
+/**
+ * Reference to a field of type 'TaskIcon[]'
+ */
+export type ListEnumTaskIconFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskIcon[]'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>

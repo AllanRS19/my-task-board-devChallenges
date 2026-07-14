@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { CircuitBoard, Plus } from "lucide-react";
-import { useCurrentUser } from "@/hooks/useAuth";
 import { useCreateBoard, useDeleteBoard, useGetUserBoards, useUpdateBoard } from "@/hooks/useBoard";
 import type { Board } from "@/api/boards";
 import BoardCard from "@/components/BoardCard";
-import Navbar from "@/components/shared/Navbar";
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
@@ -12,7 +10,6 @@ import { EntityModal } from "@/components/shared/EntityModal";
 
 const BoardsPage = () => {
 
-    const { data } = useCurrentUser();
     const { data: userBoardsData, isLoading, isError } = useGetUserBoards();
 
     const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -23,15 +20,8 @@ const BoardsPage = () => {
     const updateBoard = useUpdateBoard(editingBoard?.id ?? '');
     const deleteBoard = useDeleteBoard();
 
-    if (!data) return null;
-
-    const { user } = data;
-
-    console.log(userBoardsData?.boards);
-
     return (
-        <section className="min-h-screen w-full max-w-4xl mx-auto py-8 px-8 md:px-0">
-            <Navbar userName={user.name} />
+        <>
 
             <div className="mt-8 flex items-center justify-between">
                 <h1 className="font-display italic font-semibold text-2xl text-charcoal">
@@ -136,8 +126,7 @@ const BoardsPage = () => {
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-
-        </section>
+        </>
     )
 }
 

@@ -117,6 +117,13 @@ export type EnumTaskStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumTaskStatusFilter<$PrismaModel> | $Enums.TaskStatus
 }
 
+export type EnumTaskIconFilter<$PrismaModel = never> = {
+  equals?: $Enums.TaskIcon | Prisma.EnumTaskIconFieldRefInput<$PrismaModel>
+  in?: $Enums.TaskIcon[] | Prisma.ListEnumTaskIconFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TaskIcon[] | Prisma.ListEnumTaskIconFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTaskIconFilter<$PrismaModel> | $Enums.TaskIcon
+}
+
 export type EnumTaskStatusWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.TaskStatus | Prisma.EnumTaskStatusFieldRefInput<$PrismaModel>
   in?: $Enums.TaskStatus[] | Prisma.ListEnumTaskStatusFieldRefInput<$PrismaModel>
@@ -125,6 +132,16 @@ export type EnumTaskStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumTaskStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumTaskStatusFilter<$PrismaModel>
+}
+
+export type EnumTaskIconWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TaskIcon | Prisma.EnumTaskIconFieldRefInput<$PrismaModel>
+  in?: $Enums.TaskIcon[] | Prisma.ListEnumTaskIconFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TaskIcon[] | Prisma.ListEnumTaskIconFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTaskIconWithAggregatesFilter<$PrismaModel> | $Enums.TaskIcon
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTaskIconFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTaskIconFilter<$PrismaModel>
 }
 
 export type NestedStringFilter<$PrismaModel = never> = {
@@ -243,6 +260,13 @@ export type NestedEnumTaskStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumTaskStatusFilter<$PrismaModel> | $Enums.TaskStatus
 }
 
+export type NestedEnumTaskIconFilter<$PrismaModel = never> = {
+  equals?: $Enums.TaskIcon | Prisma.EnumTaskIconFieldRefInput<$PrismaModel>
+  in?: $Enums.TaskIcon[] | Prisma.ListEnumTaskIconFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TaskIcon[] | Prisma.ListEnumTaskIconFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTaskIconFilter<$PrismaModel> | $Enums.TaskIcon
+}
+
 export type NestedEnumTaskStatusWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.TaskStatus | Prisma.EnumTaskStatusFieldRefInput<$PrismaModel>
   in?: $Enums.TaskStatus[] | Prisma.ListEnumTaskStatusFieldRefInput<$PrismaModel>
@@ -251,6 +275,16 @@ export type NestedEnumTaskStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumTaskStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumTaskStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumTaskIconWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TaskIcon | Prisma.EnumTaskIconFieldRefInput<$PrismaModel>
+  in?: $Enums.TaskIcon[] | Prisma.ListEnumTaskIconFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TaskIcon[] | Prisma.ListEnumTaskIconFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTaskIconWithAggregatesFilter<$PrismaModel> | $Enums.TaskIcon
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTaskIconFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTaskIconFilter<$PrismaModel>
 }
 
 

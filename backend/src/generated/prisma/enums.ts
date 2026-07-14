@@ -17,3 +17,15 @@ export const TaskStatus = {
 } as const
 
 export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus]
+
+
+export const TaskIcon = {
+  DEV: 'DEV',
+  CHAT: 'CHAT',
+  COFFEE: 'COFFEE',
+  GYM: 'GYM',
+  BOOKS: 'BOOKS',
+  CLOCK: 'CLOCK'
+} as const
+
+export type TaskIcon = (typeof TaskIcon)[keyof typeof TaskIcon]

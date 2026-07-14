@@ -30,7 +30,7 @@ export type TaskMinAggregateOutputType = {
   description: string | null
   status: $Enums.TaskStatus | null
   board_id: string | null
-  icon: string | null
+  icon: $Enums.TaskIcon | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -41,7 +41,7 @@ export type TaskMaxAggregateOutputType = {
   description: string | null
   status: $Enums.TaskStatus | null
   board_id: string | null
-  icon: string | null
+  icon: $Enums.TaskIcon | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -171,7 +171,7 @@ export type TaskGroupByOutputType = {
   description: string | null
   status: $Enums.TaskStatus
   board_id: string
-  icon: string
+  icon: $Enums.TaskIcon
   createdAt: Date
   updatedAt: Date
   _count: TaskCountAggregateOutputType | null
@@ -203,7 +203,7 @@ export type TaskWhereInput = {
   description?: Prisma.StringNullableFilter<"Task"> | string | null
   status?: Prisma.EnumTaskStatusFilter<"Task"> | $Enums.TaskStatus
   board_id?: Prisma.StringFilter<"Task"> | string
-  icon?: Prisma.StringFilter<"Task"> | string
+  icon?: Prisma.EnumTaskIconFilter<"Task"> | $Enums.TaskIcon
   createdAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   board?: Prisma.XOR<Prisma.BoardScalarRelationFilter, Prisma.BoardWhereInput>
@@ -231,7 +231,7 @@ export type TaskWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Task"> | string | null
   status?: Prisma.EnumTaskStatusFilter<"Task"> | $Enums.TaskStatus
   board_id?: Prisma.StringFilter<"Task"> | string
-  icon?: Prisma.StringFilter<"Task"> | string
+  icon?: Prisma.EnumTaskIconFilter<"Task"> | $Enums.TaskIcon
   createdAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   board?: Prisma.XOR<Prisma.BoardScalarRelationFilter, Prisma.BoardWhereInput>
@@ -260,7 +260,7 @@ export type TaskScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Task"> | string | null
   status?: Prisma.EnumTaskStatusWithAggregatesFilter<"Task"> | $Enums.TaskStatus
   board_id?: Prisma.StringWithAggregatesFilter<"Task"> | string
-  icon?: Prisma.StringWithAggregatesFilter<"Task"> | string
+  icon?: Prisma.EnumTaskIconWithAggregatesFilter<"Task"> | $Enums.TaskIcon
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Task"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Task"> | Date | string
 }
@@ -270,7 +270,7 @@ export type TaskCreateInput = {
   name: string
   description?: string | null
   status?: $Enums.TaskStatus
-  icon: string
+  icon: $Enums.TaskIcon
   createdAt?: Date | string
   updatedAt?: Date | string
   board: Prisma.BoardCreateNestedOneWithoutTasksInput
@@ -282,7 +282,7 @@ export type TaskUncheckedCreateInput = {
   description?: string | null
   status?: $Enums.TaskStatus
   board_id: string
-  icon: string
+  icon: $Enums.TaskIcon
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -292,7 +292,7 @@ export type TaskUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-  icon?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.EnumTaskIconFieldUpdateOperationsInput | $Enums.TaskIcon
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   board?: Prisma.BoardUpdateOneRequiredWithoutTasksNestedInput
@@ -304,7 +304,7 @@ export type TaskUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
   board_id?: Prisma.StringFieldUpdateOperationsInput | string
-  icon?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.EnumTaskIconFieldUpdateOperationsInput | $Enums.TaskIcon
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -315,7 +315,7 @@ export type TaskCreateManyInput = {
   description?: string | null
   status?: $Enums.TaskStatus
   board_id: string
-  icon: string
+  icon: $Enums.TaskIcon
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -325,7 +325,7 @@ export type TaskUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-  icon?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.EnumTaskIconFieldUpdateOperationsInput | $Enums.TaskIcon
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -336,7 +336,7 @@ export type TaskUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
   board_id?: Prisma.StringFieldUpdateOperationsInput | string
-  icon?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.EnumTaskIconFieldUpdateOperationsInput | $Enums.TaskIcon
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -435,12 +435,16 @@ export type EnumTaskStatusFieldUpdateOperationsInput = {
   set?: $Enums.TaskStatus
 }
 
+export type EnumTaskIconFieldUpdateOperationsInput = {
+  set?: $Enums.TaskIcon
+}
+
 export type TaskCreateWithoutBoardInput = {
   id?: string
   name: string
   description?: string | null
   status?: $Enums.TaskStatus
-  icon: string
+  icon: $Enums.TaskIcon
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -450,7 +454,7 @@ export type TaskUncheckedCreateWithoutBoardInput = {
   name: string
   description?: string | null
   status?: $Enums.TaskStatus
-  icon: string
+  icon: $Enums.TaskIcon
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -490,7 +494,7 @@ export type TaskScalarWhereInput = {
   description?: Prisma.StringNullableFilter<"Task"> | string | null
   status?: Prisma.EnumTaskStatusFilter<"Task"> | $Enums.TaskStatus
   board_id?: Prisma.StringFilter<"Task"> | string
-  icon?: Prisma.StringFilter<"Task"> | string
+  icon?: Prisma.EnumTaskIconFilter<"Task"> | $Enums.TaskIcon
   createdAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Task"> | Date | string
 }
@@ -500,7 +504,7 @@ export type TaskCreateManyBoardInput = {
   name: string
   description?: string | null
   status?: $Enums.TaskStatus
-  icon: string
+  icon: $Enums.TaskIcon
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -510,7 +514,7 @@ export type TaskUpdateWithoutBoardInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-  icon?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.EnumTaskIconFieldUpdateOperationsInput | $Enums.TaskIcon
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -520,7 +524,7 @@ export type TaskUncheckedUpdateWithoutBoardInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-  icon?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.EnumTaskIconFieldUpdateOperationsInput | $Enums.TaskIcon
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -530,7 +534,7 @@ export type TaskUncheckedUpdateManyWithoutBoardInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-  icon?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.EnumTaskIconFieldUpdateOperationsInput | $Enums.TaskIcon
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -606,7 +610,7 @@ export type $TaskPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     description: string | null
     status: $Enums.TaskStatus
     board_id: string
-    icon: string
+    icon: $Enums.TaskIcon
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["task"]>
@@ -1038,7 +1042,7 @@ export interface TaskFieldRefs {
   readonly description: Prisma.FieldRef<"Task", 'String'>
   readonly status: Prisma.FieldRef<"Task", 'TaskStatus'>
   readonly board_id: Prisma.FieldRef<"Task", 'String'>
-  readonly icon: Prisma.FieldRef<"Task", 'String'>
+  readonly icon: Prisma.FieldRef<"Task", 'TaskIcon'>
   readonly createdAt: Prisma.FieldRef<"Task", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Task", 'DateTime'>
 }
