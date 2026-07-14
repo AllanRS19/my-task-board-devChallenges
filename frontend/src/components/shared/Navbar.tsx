@@ -4,10 +4,8 @@ import { useSignOut } from '@/hooks/useAuth';
 
 const Navbar = ({
     userName,
-    customName = 'My Boards'
 }: {
-    userName: string,
-    customName?: string
+    userName: string
 }) => {
 
     const { mutate: handleSignOut } = useSignOut();
@@ -17,7 +15,7 @@ const Navbar = ({
             <div className="flex items-center gap-6">
                 <Link to='/boards' className="flex items-center gap-2">
                     <span className="font-bold text-gray-900">
-                        {customName}
+                        My Boards
                     </span>
                 </Link>
             </div>

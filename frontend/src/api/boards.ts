@@ -1,5 +1,6 @@
 import type { CreateBoardInput, UpdateBoardInput } from "@/schemas/board.schema";
 import { api } from "./client";
+import type { Task } from "./tasks";
 
 export interface Board {
     id: string;
@@ -14,7 +15,7 @@ export interface BoardWithTasks {
     id: string;
     title: string;
     description: string | null;
-    // tasks: Task[];
+    tasks: Task[];
 }
 
 export const boardApi = {

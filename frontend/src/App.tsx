@@ -3,6 +3,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import AuthPage from './pages/AuthPage';
 import BoardsPage from './pages/BoardsPage';
 import BoardDetailsPage from './pages/BoardDetailsPage';
+import BoardsLayout from './components/shared/BoardsLayout';
 
 const App = () => {
     return (
@@ -11,8 +12,18 @@ const App = () => {
                 <Route path="/auth" element={<AuthPage />} />
 
                 <Route element={<ProtectedRoute />}>
-                    <Route path="/boards" element={<BoardsPage />} />
-                    <Route path="/boards/:id" element={<BoardDetailsPage />} />
+                    <Route path="/boards" element={
+                        <BoardsLayout>
+                            <BoardsPage />
+                        </BoardsLayout>
+                    }
+                    />
+                    <Route path="/boards/:id" element={
+                        <BoardsLayout>
+                            <BoardDetailsPage />
+                        </BoardsLayout>
+                    }
+                    />
                 </Route>
             </Routes>
         </BrowserRouter>

@@ -35,7 +35,7 @@ model Task {
     status      TaskStatus @default(IN_PROGRESS)
     board       Board      @relation(fields: [board_id], references: [id], onDelete: Cascade)
     board_id    String
-    icon        String
+    icon        TaskIcon
     createdAt   DateTime   @default(now())
     updatedAt   DateTime   @default(now()) @updatedAt
 
@@ -47,4 +47,13 @@ enum TaskStatus {
     COMPLETED
     WONT_DO
     TO_DO
+}
+
+enum TaskIcon {
+    DEV
+    CHAT
+    COFFEE
+    GYM
+    BOOKS
+    CLOCK
 }
