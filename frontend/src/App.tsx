@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import AuthPage from './pages/AuthPage';
 import BoardsPage from './pages/BoardsPage';
@@ -9,6 +9,9 @@ const App = () => {
     return (
         <BrowserRouter>
             <Routes>
+
+                <Route path="/" element={<Navigate to="/auth" replace />} />
+
                 <Route path="/auth" element={<AuthPage />} />
 
                 <Route element={<ProtectedRoute />}>
