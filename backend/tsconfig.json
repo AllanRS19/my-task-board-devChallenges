@@ -3,7 +3,7 @@
     // Environment setup & latest features
     "lib": ["ESNext"],
     "target": "ES2023",
-    "module": "ESNext",
+    "module": "nodenext",
     "moduleDetection": "force",
     "esModuleInterop": true,
     "jsx": "react-jsx",
@@ -11,10 +11,9 @@
     "types": ["bun"],
 
     // Bundler mode
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
+    "moduleResolution": "nodenext",
     "verbatimModuleSyntax": true,
-    "noEmit": true,
+    "noEmit": false,
 
     // Best practices
     "strict": true,
@@ -28,6 +27,7 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
 
+    "rootDir": "./src",
     "outDir": "dist"
 
   },
