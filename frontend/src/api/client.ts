@@ -1,5 +1,10 @@
-// This is the fetch wrapper for the API calls to the server
-const API_BASE_URL = '/api/v1';
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+if (!backendUrl) {
+    throw new Error("VITE_BACKEND_URL is not defined.");
+}
+
+const API_BASE_URL = `${backendUrl}/api/v1`;
 
 export class ApiError extends Error {
     constructor(public status: number, message: string) {
