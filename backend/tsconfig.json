@@ -3,7 +3,7 @@
     // Environment setup & latest features
     "lib": ["ESNext"],
     "target": "ES2023",
-    "module": "nodenext",
+    "module": "esnext",
     "moduleDetection": "force",
     "esModuleInterop": true,
     "jsx": "react-jsx",
@@ -11,7 +11,7 @@
     "types": ["bun"],
 
     // Bundler mode
-    "moduleResolution": "nodenext",
+    "moduleResolution": "bundler",
     "verbatimModuleSyntax": true,
     "noEmit": false,
 
