@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node dist/index.js",
     "dev": "bun run --watch src/server.ts"
   },
   "devDependencies": {
