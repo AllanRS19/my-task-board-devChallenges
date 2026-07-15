@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js",
+    "postinstall": "prisma generate",
+    "start": "node dist/server.js",
     "dev": "bun run --watch src/server.ts"
   },
   "devDependencies": {
