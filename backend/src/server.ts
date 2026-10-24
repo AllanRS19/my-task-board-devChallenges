@@ -25,14 +25,22 @@ app.use(cors({
 }));
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // Setting PORT
 const PORT = process.env.PORT || 3000;
 
 // API Routes
-const API_ROUTE = process.env.API_ROUTE!;
+const API_ROUTE = process.env.API_ROUTE;
+
+if (!API_ROUTE) {
+    throw new Error('API_ROUTE is not defined in environment variables');
+}
+
+// Health check endpoint
+app.get(`${API_ROUTE}/health`, (_req, res) => {
+    res.status(200).json({ success: true, message: 'OK' });
+});
 
 app.use(`${API_ROUTE}/auth`, authRouter);
 app.use(`${API_ROUTE}/boards`, boardRouter);
