@@ -20,6 +20,15 @@ if (!JWT_SECRET) {
     throw new Error('JWT_SECRET is not defined in environment variables');
 }
 
+if (!JWT_EXPIRES_IN) {
+    throw new Error('JWT_EXPIRES_IN is not defined in environment variables');
+}
+
+// This is a dummy hash computed once at startup, so when the sign in method
+// compares it when the email doesn't exists, it fakes the same response time
+// as if it was a wrong password and people can't guess if email was correct or not
+const DUMMY_PASSWORD_HASH = bcrypt.hashSync('dummy-password-for-timing', SALT_ROUNDS);
+
 export const signUp: RequestHandler = async (req: Request, res: Response) => {
 
     try {
@@ -101,7 +110,7 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
         // This keeps response time roughly constant whether or not the email
         // exists, so an attacker can't use timing to enumerate valid accounts.
 
-        const passwordHash = user?.password ?? '$2b$10$invalidsaltinvalidsaltinvalidsalt.hashvalue';
+        const passwordHash = user?.password ?? DUMMY_PASSWORD_HASH;
         const isPasswordValid = await bcrypt.compare(password, passwordHash);
 
         if (!user || !isPasswordValid) {
