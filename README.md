@@ -7,7 +7,7 @@ A full stack task board app where users can create boards and manage tasks insid
 
 > **Note:** the API runs on a free Render instance that goes to sleep after a period of inactivity. The first request can take up to about a minute while it wakes up. If the first attempt fails, try again after a few seconds.
 
-![App screenshot](./docs/screenshot.png)
+![App screenshot](./frontend/public/app-screenshot.png)
 <!-- Add a screenshot of the board and, if possible, a short GIF creating and editing a task -->
 
 ## Features
