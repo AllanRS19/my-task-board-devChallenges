@@ -1,15 +1,15 @@
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
-if (!backendUrl) {
-    throw new Error("VITE_BACKEND_URL is not defined.");
-}
-
-const API_BASE_URL = `${backendUrl}/api/v1`;
+const API_BASE_URL = '/api/v1';
 
 export class ApiError extends Error {
     constructor(public status: number, message: string) {
         super(message);
     }
+}
+
+type ApiResponse = {
+    success: boolean;
+    message?: string;
+    data?: unknown;
 }
 
 async function fetcher<T>(path: string, options: RequestInit = {}): Promise<T> {
@@ -22,7 +22,13 @@ async function fetcher<T>(path: string, options: RequestInit = {}): Promise<T> {
         }
     });
 
-    const json = await res.json();
+    let json: ApiResponse;
+
+    try {
+        json = await res.json();
+    } catch {
+        throw new ApiError(res.status, 'The server is not responding. It may be waking up, please try again in a few seconds.');
+    }
 
     if (!res.ok || !json.success) {
         throw new ApiError(res.status, json.message ?? 'Something went wrong');
